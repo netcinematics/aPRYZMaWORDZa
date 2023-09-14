@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Speak_2_txt</title>
+</head>
+   <body>
+     <style>
+       /* PC */
+        html, body { height: 100%; width:100%; background:black; margin:0}
+        body{padding-top:1em;display:flex;flex-direction:column;
+         justify-content:space-evenly;align-items:center;}
+        .mainBtn{margin:1em;}
+        .subMenuBtn { border-radius: 13px;  background-image: linear-gradient(grey, steelblue, black);
+                   margin:1em;cursor:pointer;font-size:0.888em; }
+        .btnTXT{font-size:1em;}
+        .btnTXT:hover{color:navajowhite}
+        .subMenuBtn:hover{border:2px solid steelblue; color:darkblue}
+        .disabled{ color: grey; border: 1px solid steelblue; background: transparent !important;
+             }
+        
+      @media only screen and (max-width: 800px) { /* TABLET */
+         body{  background-color: #04223c;}
+         .btnTXT{font-size:0.888em;}
+         .mainBtn{margin:0.888em;}
+         .subMenuBtn{font-size:0.666em;}
+      }  
+      @media only screen and (max-width: 500px) { /* PHONE */
+         body{ background-color: #07589f;}
+         .btnTXT{font-size:0.888em;}
+         .mainBtn{margin:0.666em;}
+         .subMenuBtn{font-size:0.666em;}
+      }
+     </style>
+      <header style="display:flex;justify-content:space-evenly;
+        background-image: linear-gradient(grey, steelblue, black);
+        box-shadow:0 0 14px 0px steelblue;border-radius:13px; margin:0 auto;
+        width:93%;">
+         <button class="mainBtn" onclick="transcribeTXT()" style="border-radius:8px;
+            background:grey; 
+            cursor:pointer;box-shadow: inset 0px 0px 10px 0px limegreen;">
+            <span style="border-radius:100%;background:limegreen;
+              border:1px solid grey;">
+            🎤</span><span class="btnTXT">Speak</span>
+         </button>
+         <section id="listening" class="mainBtn disabled" style="border-radius:8px;
+         background:limegreen;padding: 6px;
+            ">🔴 Listening </section>
+         <section id="notlistening" class="mainBtn" style="border-radius:8px;
+         background:#6283be;padding: 6px;border: 1px solid darkslateblue;
+            ">🔈 Not listening</section>
+         <button class= "mainBtn " onclick="stopTXT()" style="border-radius:8px;
+            background:grey;box-shadow: inset 0px 0px 10px 0px crimson;
+            cursor:pointer;">⛔<span class="btnTXT">Stop</span>
+         </button>
+        </header>
+        <menu style="display:flex;justify-content:space-evenly;
+            margin:0;padding:0;margin-top:-6px;">
+         <button class="subMenuBtn" onclick="undoFn()">↶undo</button>
+         <button class="subMenuBtn">prime_key</button>
+         <button class="subMenuBtn">omni_key</button>
+         <button class="subMenuBtn">alpha_key</button>
+        </menu>
+      <!-- <h3 id="output" class="hide"></h3> -->
+      <textarea id="output" style="background:darkslateblue;width:80.888%;height:88%;margin: 0 2% 4% 2%;
+        border-radius: 13px; border: solid 1px steelblue; box-shadow: 1px 1px 11px 0px cyan;
+        padding: 4% 0 4% 4%; color: cyan; line-height: 2.444em;">say something...</textarea>
+      <footer style="display:flex;justify-content:space-evenly;width:90%;margin:0 auto; margin-bottom:4%;
+      background-image: linear-gradient(grey, steelblue, black);
+      box-shadow:0 0 14px 0px steelblue;border-radius:13px;">
+       <button class="" onclick="" style="margin:1em;border-radius:8px;background:grey;
+          cursor:pointer;">
+          <span style="border-radius:100%;background:skyblue;border:1px solid grey;">
+            📡</span> <span class="btnTXT">SAVE CHAT</span>
+       </button>
+      
+       <button class="" onclick="" style="margin:1em;border-radius:8px;background:grey;
+          cursor:pointer;">
+          <span style="border-radius:100%;background:skyblue;border:1px solid grey;">
+            📋</span> <span class="btnTXT">COPY CHAT</span>
+       </button>
+      
+       <button class="" onclick="" style="margin:1em;border-radius:8px;background:grey;
+          cursor:pointer;">
+          <span style="border-radius:100%;background:skyblue;border:1px solid grey;">
+            📚</span> <span class="btnTXT">COPY ALL</span>
+       </button>
+      
+      
+      </footer>
+      <script>
+         var output = document.getElementById('output');
+         let outputTXT = [];
+         let stopTXT = () => { };
+         let undoFn = () => {  
+
+            if(outputTXT && outputTXT.length>0){
+               outputTXT = outputTXT.slice(0,outputTXT.length-1)
+               output.innerHTML = outputTXT.join('\n');
+            }
+         };
+         var stateListening = document.getElementById('listening');
+         var stateNotListening = document.getElementById('notlistening');
+         let transcribeTXT = () => {
+            // document.getElementById("output").innerHTML = "Loading text...";
+            // var output = document.getElementById('output');
+            // var action = document.getElementById('action');
+            let recognization = new webkitSpeechRecognition();
+            recognization.onstart = () => {
+            //    action.innerHTML = "Listening...";
+               stateListening.classList.remove('disabled');
+               stateNotListening.classList.add('disabled');
+            }
+            recognization.onresult = (e) => {
+               var transcript = e.results[0][0].transcript;
+               outputTXT.push(transcript)
+               output.innerHTML = outputTXT.join('\n');
+            //    action.innerHTML = "";
+               stateListening.classList.add('disabled');
+               stateNotListening.classList.remove('disabled');
+            }
+            recognization.start();
+         }
+      </script>
+   </body>
+</html>
