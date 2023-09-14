@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-   <title>Speak_2_txt</title>
+   <title>aPRYZMaWORDZa</title>
 </head>
    <body>
      <style>
@@ -44,33 +44,45 @@
          </button>
          <section id="listening" class="mainBtn disabled" style="border-radius:8px;
          background:limegreen;padding: 6px;
-            ">🔴 Listening </section>
+            "><span id="notListenIcon" style="display:inline;">🔘</span>
+            <span id="listenIcon"  style="display:none;" >🔴</span> Listening </section>
          <section id="notlistening" class="mainBtn" style="border-radius:8px;
          background:#6283be;padding: 6px;border: 1px solid darkslateblue;
-            ">🔈 Not listening</section>
+            "><span style="border-radius:33%;background:skyblue;
+              border:1px solid grey;">
+            🔈</span>Not listening</section>
          <button class= "mainBtn " onclick="stopTXT()" style="border-radius:8px;
             background:grey;box-shadow: inset 0px 0px 10px 0px crimson;
-            cursor:pointer;">⛔<span class="btnTXT">Stop</span>
+            cursor:pointer;"><span style="border-radius:100%;background:firebrick;
+              border:1px solid grey;">
+            ⛔</span><span class="btnTXT">Stop</span>
          </button>
         </header>
         <menu style="display:flex;justify-content:space-evenly;
             margin:0;padding:0;margin-top:-6px;">
-         <button class="subMenuBtn" onclick="undoFn()">↶undo</button>
-         <button class="subMenuBtn">prime_key</button>
-         <button class="subMenuBtn">omni_key</button>
-         <button class="subMenuBtn">alpha_key</button>
+         <button class="subMenuBtn">prime🗝</button>
+         <button class="subMenuBtn">omni🗝️</button>
+         <button class="subMenuBtn">alpha🔑</button>
         </menu>
-      <!-- <h3 id="output" class="hide"></h3> -->
-      <textarea id="output" style="background:darkslateblue;width:80.888%;height:88%;margin: 0 2% 4% 2%;
+      <textarea id="output" style="background:darkslateblue;width:80.888%;height:100%;margin: 0 2% 0 2%;
         border-radius: 13px; border: solid 1px steelblue; box-shadow: 1px 1px 11px 0px cyan;
-        padding: 4% 0 4% 4%; color: cyan; line-height: 2.444em;">say something...</textarea>
+        padding: 4% 0 4% 4%; color: cyan; line-height: 2.444em;">Click speak, and say something...</textarea>
+
+<menu style="display:flex;justify-content:space-evenly;
+margin:0;padding:0;margin-bottom:-6px;">
+<button class="subMenuBtn" onclick="undoFn()">↶undo</button>
+<button class="subMenuBtn" onclick="undoFn()">#️⃣</button>
+<button class="subMenuBtn" onclick="undoFn()">*️⃣.,_?!</button>
+<button class="subMenuBtn" onclick="undoFn()">🔢1.2.3.</button>
+</menu>
+
       <footer style="display:flex;justify-content:space-evenly;width:90%;margin:0 auto; margin-bottom:4%;
       background-image: linear-gradient(grey, steelblue, black);
       box-shadow:0 0 14px 0px steelblue;border-radius:13px;">
        <button class="" onclick="" style="margin:1em;border-radius:8px;background:grey;
           cursor:pointer;">
           <span style="border-radius:100%;background:skyblue;border:1px solid grey;">
-            📡</span> <span class="btnTXT">SAVE CHAT</span>
+            💾</span> <span class="btnTXT">SAVE CHAT</span>
        </button>
       
        <button class="" onclick="" style="margin:1em;border-radius:8px;background:grey;
@@ -90,36 +102,53 @@
       <script>
          var output = document.getElementById('output');
          let outputTXT = [];
-         let stopTXT = () => { };
+         var listenIcon = document.getElementById('listenIcon');
+         var notListenIcon = document.getElementById('notListenIcon');
+         var stateListening = document.getElementById('listening');
+         var stateNotListening = document.getElementById('notlistening');
+         var transcript;
+         let recognition = new webkitSpeechRecognition() || new SpeechRecognition();       
+         let transcribeTXT = () => {
+            // recognition = new webkitSpeechRecognition();
+            recognition.onstart = () => { //------------------LISTENING
+               listenIcon.style.display = "inline";
+               notListenIcon.style.display = "none";
+               stateListening.classList.remove('disabled');
+               stateNotListening.classList.add('disabled');
+            }
+            recognition.onresult = (e) => {//---------------END RECORD
+               transcript = e.results[0][0].transcript;
+               outputTXT.push(transcript)
+               output.innerHTML = outputTXT.join('.\n');
+               listenIcon.style.display = "none";
+               notListenIcon.style.display = "inline";
+               stateListening.classList.add('disabled');
+               stateNotListening.classList.remove('disabled');
+            }
+            recognition.start();
+         }
+         let stopTXT = () => { 
+            recognition.stop();
+            listenIcon.style.display = "none";
+            notListenIcon.style.display = "inline";
+            stateListening.classList.add('disabled');
+            stateNotListening.classList.remove('disabled');            
+         };
          let undoFn = () => {  
-
             if(outputTXT && outputTXT.length>0){
                outputTXT = outputTXT.slice(0,outputTXT.length-1)
                output.innerHTML = outputTXT.join('\n');
             }
-         };
-         var stateListening = document.getElementById('listening');
-         var stateNotListening = document.getElementById('notlistening');
-         let transcribeTXT = () => {
-            // document.getElementById("output").innerHTML = "Loading text...";
-            // var output = document.getElementById('output');
-            // var action = document.getElementById('action');
-            let recognization = new webkitSpeechRecognition();
-            recognization.onstart = () => {
-            //    action.innerHTML = "Listening...";
-               stateListening.classList.remove('disabled');
-               stateNotListening.classList.add('disabled');
-            }
-            recognization.onresult = (e) => {
-               var transcript = e.results[0][0].transcript;
-               outputTXT.push(transcript)
-               output.innerHTML = outputTXT.join('\n');
-            //    action.innerHTML = "";
-               stateListening.classList.add('disabled');
-               stateNotListening.classList.remove('disabled');
-            }
-            recognization.start();
-         }
+         };         
+         recognition.addEventListener("error", (event) => {
+            console.error(`Speech recognition error TRY CHROME browser: ${event.error}`);
+            outputTXT.push("Try CHROME browser. ~ : )")
+            output.innerHTML = outputTXT.join('.\n');
+            listenIcon.style.display = "none";
+            notListenIcon.style.display = "inline";
+            stateListening.classList.add('disabled');
+            stateNotListening.classList.remove('disabled');            
+        });          
       </script>
    </body>
 </html>
