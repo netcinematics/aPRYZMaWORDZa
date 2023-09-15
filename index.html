@@ -9,13 +9,14 @@
         html, body { height: 100%; width:100%; background:black; margin:0}
         body{padding-top:1em;display:flex;flex-direction:column;
          justify-content:space-evenly;align-items:center;}
-        .mainBtn{margin:1em;}
-        .subMenuBtn { border-radius: 13px;  background-image: linear-gradient(grey, steelblue, black);
-                   margin:1em;cursor:pointer;font-size:0.888em; }
+        .mainBtn{margin:1em; color:darkblue;} 
+        .subMenuBtn { color:#75bdb7; border-radius: 13px;  background-image: linear-gradient(grey, steelblue, black);
+                   margin:0.666em;cursor:pointer;font-size:0.888em;padding: 2px 6px 4px 6px; }
         .btnTXT{font-size:1em;}
-        .btnTXT:hover{color:navajowhite}
-        .subMenuBtn:hover{border:2px solid steelblue; color:darkblue}
-        .disabled{ color: grey; border: 1px solid steelblue; background: transparent !important;
+        .mainBtn:hover{color:navajowhite}
+        /* .btnTXT:hover{color:navajowhite} */
+        .subMenuBtn:hover{border:2px solid steelblue; color:darkslategrey}
+        .disabled{ color: darkslategrey; border: 1px solid steelblue; background: transparent !important;
              }
         
       @media only screen and (max-width: 800px) { /* TABLET */
@@ -42,15 +43,17 @@
               border:1px solid grey;">
             🎤</span><span class="btnTXT">Speak</span>
          </button>
-         <section id="listening" class="mainBtn disabled" style="border-radius:8px;
-         background:limegreen;padding: 6px;
-            "><span id="notListenIcon" style="display:inline;">🔘</span>
-            <span id="listenIcon"  style="display:none;" >🔴</span> Listening </section>
-         <section id="notlistening" class="mainBtn" style="border-radius:8px;
+         <section id="listeningBox" class="mainBtn" style="border-radius:8px;
+         background:limegreen;padding: 6px; display:none;">
+            <!-- <span id="notListenIcon" style="display:inline;">🔘</span> -->
+            <span>🔴</span> Listening 
+        </section>
+         <section id="notlisteningBox" class="mainBtn" style="border-radius:8px;
          background:#6283be;padding: 6px;border: 1px solid darkslateblue;
             "><span style="border-radius:33%;background:skyblue;
               border:1px solid grey;">
-            🔈</span>Not listening</section>
+            🔈</span>Not listening
+        </section>
          <button class= "mainBtn " onclick="stopTXT()" style="border-radius:8px;
             background:grey;box-shadow: inset 0px 0px 10px 0px crimson;
             cursor:pointer;"><span style="border-radius:100%;background:firebrick;
@@ -59,7 +62,10 @@
          </button>
         </header>
         <menu style="display:flex;justify-content:space-evenly;
-            margin:0;padding:0;margin-top:-6px;">
+            margin:0;padding:0;margin-top:-6px;border-radius: 30px;
+            box-shadow: inset -2px -8px 17px 0px #3737cf;background: #182b3d;
+            ">
+
          <button class="subMenuBtn">prime🗝</button>
          <button class="subMenuBtn">omni🗝️</button>
          <button class="subMenuBtn">alpha🔑</button>
@@ -68,71 +74,92 @@
         border-radius: 13px; border: solid 1px steelblue; box-shadow: 1px 1px 11px 0px cyan;
         padding: 4% 0 4% 4%; color: cyan; line-height: 2.444em;">Click speak, and say something...</textarea>
 
-<menu style="display:flex;justify-content:space-evenly;
-margin:0;padding:0;margin-bottom:-6px;">
+<menu style="display:flex;justify-content:space-evenly;background: #182b3d;
+    border-radius: 30px;margin:0;padding:0;margin-bottom:-6px;
+    box-shadow: inset -5px 7px 8px 0px #472c88;">
 <button class="subMenuBtn" onclick="undoFn()">↶undo</button>
-<button class="subMenuBtn" onclick="undoFn()">#️⃣</button>
-<button class="subMenuBtn" onclick="undoFn()">*️⃣.,_?!</button>
+<button class="subMenuBtn" onclick="undoFn()">#️⃣title</button>
 <button class="subMenuBtn" onclick="undoFn()">🔢1.2.3.</button>
+<button class="subMenuBtn" onclick="endlineFn()">*️⃣.,_?!</button>
 </menu>
 
-      <footer style="display:flex;justify-content:space-evenly;width:90%;margin:0 auto; margin-bottom:4%;
+      <footer style="display:flex;justify-content:space-evenly;width:90%;margin:0 auto; 
+      margin-bottom:0.666%;
       background-image: linear-gradient(grey, steelblue, black);
       box-shadow:0 0 14px 0px steelblue;border-radius:13px;">
        <button class="" onclick="" style="margin:1em;border-radius:8px;background:grey;
-          cursor:pointer;">
-          <span style="border-radius:100%;background:skyblue;border:1px solid grey;">
+          cursor:pointer;box-shadow: inset -1px -1px 4px 1px gold;">
+          <span style="border-radius:100%;background:gold;border:1px solid grey;">
             💾</span> <span class="btnTXT">SAVE CHAT</span>
        </button>
       
        <button class="" onclick="" style="margin:1em;border-radius:8px;background:grey;
-          cursor:pointer;">
-          <span style="border-radius:100%;background:skyblue;border:1px solid grey;">
+          cursor:pointer;box-shadow: inset -1px -1px 4px 1px orangered;">
+          <span style="border-radius:100%;background:orangered;border:1px solid grey;">
             📋</span> <span class="btnTXT">COPY CHAT</span>
        </button>
       
        <button class="" onclick="" style="margin:1em;border-radius:8px;background:grey;
-          cursor:pointer;">
-          <span style="border-radius:100%;background:skyblue;border:1px solid grey;">
+          cursor:pointer;box-shadow: inset -1px -1px 4px 1px rebeccapurple;">
+          <span style="border-radius:100%;background:rebeccapurple;border:1px solid grey;">
             📚</span> <span class="btnTXT">COPY ALL</span>
        </button>
       
       
       </footer>
+      <legal style="color:darkslategray;font-size: 0.666em;">copyright 2020-2023 netcinematics, all rights reserved.</legal>
       <script>
          var output = document.getElementById('output');
          let outputTXT = [];
-         var listenIcon = document.getElementById('listenIcon');
-         var notListenIcon = document.getElementById('notListenIcon');
-         var stateListening = document.getElementById('listening');
-         var stateNotListening = document.getElementById('notlistening');
+        //  var listenIcon = document.getElementById('listenIcon');
+        //  var notListenIcon = document.getElementById('notListenIcon');
+         var stateListeningBox = document.getElementById('listeningBox');
+         var stateNotListeningBox = document.getElementById('notlisteningBox');
          var transcript;
          let recognition = new webkitSpeechRecognition() || new SpeechRecognition();       
          let transcribeTXT = () => {
             // recognition = new webkitSpeechRecognition();
             recognition.onstart = () => { //------------------LISTENING
-               listenIcon.style.display = "inline";
-               notListenIcon.style.display = "none";
-               stateListening.classList.remove('disabled');
-               stateNotListening.classList.add('disabled');
+            //    listenIcon.style.display = "inline";
+            //    notListenIcon.style.display = "none";
+            //    stateListening.classList.remove('disabled');
+            //    stateNotListening.classList.add('disabled');
+            //    stateListeningBox.style.display = "inline";
+            //    stateNotListeningBox.style.display = "none";            
+                toggleRecordState(true);
             }
             recognition.onresult = (e) => {//---------------END RECORD
                transcript = e.results[0][0].transcript;
                outputTXT.push(transcript)
                output.innerHTML = outputTXT.join('.\n');
-               listenIcon.style.display = "none";
-               notListenIcon.style.display = "inline";
-               stateListening.classList.add('disabled');
-               stateNotListening.classList.remove('disabled');
+            //    listenIcon.style.display = "none";
+            //    notListenIcon.style.display = "inline";
+            //    stateListening.classList.add('disabled');
+            //    stateNotListening.classList.remove('disabled');
+                // stateListeningBox.style.display = "none";
+                // stateNotListeningBox.style.display = "inline";
+                toggleRecordState(false);
             }
             recognition.start();
          }
+         let toggleRecordState = (state) => { 
+            if(state){//LISTENING
+                stateListeningBox.style.display = "inline";
+               stateNotListeningBox.style.display = "none";   
+            }else{ //NOT LISTENING
+                stateListeningBox.style.display = "none";
+                stateNotListeningBox.style.display = "inline";        
+            }
+         }
          let stopTXT = () => { 
             recognition.stop();
-            listenIcon.style.display = "none";
-            notListenIcon.style.display = "inline";
-            stateListening.classList.add('disabled');
-            stateNotListening.classList.remove('disabled');            
+            // listenIcon.style.display = "none";
+            // notListenIcon.style.display = "inline";
+            // stateListening.classList.add('disabled');
+            // stateNotListening.classList.remove('disabled');    
+            // stateListeningBox.style.display = "none";
+            // stateNotListeningBox.style.display = "inline";  
+            toggleRecordState(false);                  
          };
          let undoFn = () => {  
             if(outputTXT && outputTXT.length>0){
@@ -140,14 +167,24 @@ margin:0;padding:0;margin-bottom:-6px;">
                output.innerHTML = outputTXT.join('\n');
             }
          };         
+         let endlineFn = () => {  
+            if(outputTXT && outputTXT.length>0){
+                //todo get last line, regex last character, sequence endline.
+            //    outputTXT = outputTXT.slice(0,outputTXT.length-1)
+            //    output.innerHTML = outputTXT.join('\n');
+            }
+         };         
          recognition.addEventListener("error", (event) => {
             console.error(`Speech recognition error TRY CHROME browser: ${event.error}`);
             outputTXT.push("Try CHROME browser. ~ : )")
             output.innerHTML = outputTXT.join('.\n');
-            listenIcon.style.display = "none";
-            notListenIcon.style.display = "inline";
-            stateListening.classList.add('disabled');
-            stateNotListening.classList.remove('disabled');            
+            // listenIcon.style.display = "none";
+            // notListenIcon.style.display = "inline";
+            // stateListening.classList.add('disabled');
+            // stateNotListening.classList.remove('disabled');            
+            // stateListeningBox.style.display = "none";
+            // stateNotListeningBox.style.display = "inline";            
+            toggleRecordState(false);
         });          
       </script>
    </body>
