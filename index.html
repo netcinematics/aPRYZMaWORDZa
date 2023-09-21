@@ -14,6 +14,7 @@
          .topRightBtn2{position:absolute;top:3px;right:6px;display:flex;}
          .topRightBtn2 .txt1{ color:skyblue; font-size:0.444em;margin:3px 0 0 3px;}
          .topRightBtn2 .icon1 {font-size:1em;padding-bottom:6px;}
+         .docDeleteBtn {border-radius: 100%; background: darkgrey;}
          .docTopicBtn {border-radius: 13px;margin-top: 10px;background: slategrey;
             color: skyblue; font-size: 0.666em; padding: 6px;}
          .docTopicBtn:hover{border:2px solid steelblue}
@@ -21,7 +22,8 @@
         .subMenuBtn { color:#75bdb7; border-radius: 13px;  background-image: linear-gradient(grey, steelblue, black);
                    margin:0.666em;cursor:pointer;font-size:0.888em;padding: 2px 6px 4px 6px; }
         .btnTXT{font-size:1em;}
-        .btnTXT:hover{color:navajowhite;}
+        /* .btnTXT:hover{color:navajowhite;} */
+        .hoverTXT:hover{color:navajowhite;}
         /* .mainBtn:hover{color:navajowhite} */
         /* .btnTXT:hover{color:navajowhite} */
         .subMenuBtn:hover{border:2px solid steelblue; color:darkslategrey}
@@ -72,27 +74,42 @@
             cursor:pointer;box-shadow: inset 0px 0px 10px 0px limegreen;">
             <span style="border-radius:100%;background:limegreen;
               border:1px solid grey;">
-            🎤</span><span class="btnTXT">Speak</span>
+            🎤</span><span class="btnTXT hoverTXT">Speak</span>
          </button>
+
          <section id="listeningBox" class="mainBtn" style="border-radius:8px;
          background:limegreen;padding: 6px; display:none;">
             <span>🔴</span> Listening 
         </section>
+
          <section id="notlisteningBox" class="mainBtn" style="border-radius:8px;
          background:#6283be;padding: 6px;border: 1px solid darkslateblue;
             "><span style="border-radius:33%;background:skyblue;
               border:1px solid grey;">
             🔈</span>Not listening
         </section>
+
+         <section id="savedBox" class="mainBtn" style="border-radius:20px;
+            background:rgb(249, 231, 130);padding:4px 4px 8px 4px;display:none;
+            border: 1px solid rgb(221, 118, 2);color:rgb(221, 118, 2);
+            ">💾 saved.</section>
+
+         <section id="copiedBox" class="mainBtn" style="border-radius:20px;
+            background:#fad688;padding:4px 4px 8px 4px;display:none;
+            border: 1px solid rgb(221, 118, 2);color:rgb(221, 118, 2);
+            ">🎭 copied.</section>
+
          <section id="errorBox" class="mainBtn" style="border-radius:20px;
             background:#091d3e;padding:4px 4px 8px 4px;display:none;
             border: 1px solid rgb(221, 118, 2);color:rgb(221, 118, 2);
             ">⚠️ error...</section>
+
+
          <button class= "mainBtn " onclick="stopTXT()" style="border-radius:8px;
             background:grey;box-shadow: inset 0px 0px 10px 0px crimson;
             cursor:pointer;"><span style="border-radius:100%;background:firebrick;
               border:1px solid grey;">
-            ⛔</span><span class="btnTXT">Stop</span>
+            ⛔</span><span class="btnTX hoverTXT">Stop</span>
          </button>
         </header>
         <menu style="display:flex;justify-content:space-evenly;
@@ -136,17 +153,17 @@
        <button class="" onclick="saveChatFn()" style="margin:1em;border-radius:8px;background:grey;
           cursor:pointer;box-shadow: inset -1px -1px 4px 1px gold;">
           <span style="border-radius:100%;background:gold;border:1px solid grey;">
-            💾</span> <span class="btnTXT">SAVE CHAT</span>
+            💾</span> <span class="btnTXT hoverTXT">SAVE CHAT</span>
        </button>
        <button class="" onclick="copyChatFn()" style="margin:1em;border-radius:8px;background:grey;
           cursor:pointer;box-shadow: inset -1px -1px 4px 1px orangered;">
           <span style="border-radius:100%;background:orangered;border:1px solid grey;">
-            📋</span> <span class="btnTXT">COPY CHAT</span>
+            📋</span> <span class="btnTXT hoverTXT">COPY CHAT</span>
        </button>
        <button class="" onclick="allChatFn()" style="margin:1em;border-radius:8px;background:grey;
           cursor:pointer;box-shadow: inset -1px -1px 4px 1px rebeccapurple;">
           <span style="border-radius:100%;background:rebeccapurple;border:1px solid grey;">
-            🎡</span> <span class="btnTXT">ALL CHATS</span>
+            🎡</span> <span class="btnTXT hoverTXT">ALL CHATS</span>
        </button>
       </footer>
       <legal style="color:darkslategray;font-size: 0.666em;">copyright 2020-2023 netcinematics, all rights reserved.</legal>
@@ -162,6 +179,8 @@
          let stateListeningBox = document.getElementById('listeningBox');
          let stateNotListeningBox = document.getElementById('notlisteningBox');
          let stateErrorBox = document.getElementById('errorBox');
+         let stateSavedBox = document.getElementById('savedBox');
+         let stateCopiedBox = document.getElementById('copiedBox');
          let transcript, txtline, txttgt;
          let all_chat_docs = [], chat_doc = {};
          let recognition = new webkitSpeechRecognition() || new SpeechRecognition();       
@@ -363,31 +382,41 @@
             }
             if(!updated_doc){
                all_chat_docs.push(chat_doc)
-            }
+            } //SAVE TO LOCAL STORAGE
             localStorage.all_chat_docs = JSON.stringify(all_chat_docs)
+            //saved msg
+            stateSavedBox.style.display = "inline";
+            stateListeningBox.style.display = "none";
+            stateNotListeningBox.style.display = "none";              
+            setTimeout( ()=>{
+               stateSavedBox.style.display = "none";
+               stateListeningBox.style.display = "none";
+               stateNotListeningBox.style.display = "inline";  
+               selectedTXT = '';
+            },3000)                        
          };   
          let copyChatFn = () => { 
             textareaBOX.select();
             transcript = textareaBOX.value;
             navigator.clipboard.writeText(transcript);
-            // document.execCommand('copy');
+            //copied msg
+            //saved msg
+            stateCopiedBox.style.display = "inline";
+            stateListeningBox.style.display = "none";
+            stateNotListeningBox.style.display = "none";              
+            setTimeout( ()=>{
+               stateCopiedBox.style.display = "none";
+               stateListeningBox.style.display = "none";
+               stateNotListeningBox.style.display = "inline";  
+               selectedTXT = '';
+            },3000)               
+            setTimeout( ()=>{document.getSelection().collapseToEnd()},2000)
          };          
          let allChatFn = () => { 
             if(allchatBOX.classList.contains('hiddenTab') ){
                allchatBOX.classList.remove('hiddenTab')
                textareaBOX.classList.add('hiddenTab')
-               //load data for view from local storage
-               all_chat_docs = (localStorage.all_chat_docs)?JSON.parse( localStorage.all_chat_docs ):[];
-               const btnContainer = document.getElementById('btnContainer');
-               btnContainer.innerHTML='';
-               // Map over the array and create buttons
-               all_chat_docs.forEach(item => {
-                  const button = document.createElement('button');
-                  button.textContent = item.title;
-                  button.classList.add('docTopicBtn')
-                  button.onclick = function() { docLookup(item.title); };
-                  btnContainer.appendChild(button);
-               });
+               docLoad();
             } else {
                allchatBOX.classList.add('hiddenTab')
                textareaBOX.classList.remove('hiddenTab')
@@ -403,6 +432,27 @@
             }
             return ''
          }
+         let docLoad = () => { //reload all doc view
+            //load data for view from local storage
+            all_chat_docs = (localStorage.all_chat_docs)?JSON.parse( localStorage.all_chat_docs ):[];
+            const btnContainer = document.getElementById('btnContainer');
+            btnContainer.innerHTML='';
+            // Map over the array and create buttons
+            all_chat_docs.forEach(item => {
+               const section1 = document.createElement('section');
+               const button1 = document.createElement('button');
+               button1.textContent = item.title;
+               button1.classList.add('docTopicBtn')
+               button1.onclick = function() { docLookup(item.title); };
+               section1.appendChild(button1);
+               const button2 = document.createElement('button');
+               button2.textContent = '🗑️';
+               button2.classList.add('docDeleteBtn')
+               button2.onclick = function() { docDelete(item.title); };
+               section1.appendChild(button2);                  
+               btnContainer.appendChild(section1);                  
+            });            
+         }
          let docLookup = (text) => { //load txt, and switch to view
             transcript = '';
             all_chat_docs = (localStorage.all_chat_docs)?
@@ -417,6 +467,21 @@
             textareaTXT = transcript.split('\n')
             allchatBOX.classList.add('hiddenTab')
             textareaBOX.classList.remove('hiddenTab') 
+         } 
+         let docDelete = (text) => { //lookup, remove from local storage.
+            all_chat_docs = (localStorage.all_chat_docs)?
+               JSON.parse( localStorage.all_chat_docs ):[];
+            for(var i=0; i<all_chat_docs.length;i++){
+               if(all_chat_docs[i].title===text){ //-----FOUND DOC
+                  // transcript = all_chat_docs[i].txt;
+                  all_chat_docs.splice(i,1)
+                  localStorage.all_chat_docs = JSON.stringify(all_chat_docs)
+                  docLoad();
+                  break; //splice object out
+               }
+            }
+            // allchatBOX.classList.add('hiddenTab')
+            // textareaBOX.classList.remove('hiddenTab') 
          } 
          function setCharAt(str,idx,chr) {
             if(idx > str.length-1) return str;
