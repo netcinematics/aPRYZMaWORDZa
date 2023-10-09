@@ -7,15 +7,22 @@
      <style>/* PC */
         html, body { height: 100%; width:100%; background:black; margin:0}
         body{padding-top:1em;display:flex;flex-direction:column;
-         justify-content:space-evenly;align-items:center;}
+         justify-content:space-evenly;align-items:center;flex:1;}
+        hr{width:100%;border: 2px solid steelblue;margin-bottom:1.444em;
+            box-shadow: -5px 1px 5px 1px purple;}
          .topLeftBtn1{position:absolute;top:3px;left:6px;display:flex;}
          .topLeftBtn1 .txt1{ color:skyblue; font-size:0.444em;margin:3px 0 0 3px;}
          .topLeftBtn1 .icon1 {font-size:1em;padding-bottom:6px;}
          .topRightBtn2{position:absolute;top:3px;right:6px;display:flex;}
          .topRightBtn2 .txt1{ color:skyblue; font-size:0.444em;margin:3px 0 0 3px;}
          .topRightBtn2 .icon1 {font-size:1em;padding-bottom:6px;}
-         .docDeleteBtn {border-radius: 100%; background: darkgrey;}
-         .docTopicBtn {border-radius: 13px;margin-top: 10px;background: slategrey;
+         .docSaveBtn {cursor:pointer;border-radius: 22px;background: #c975a0;color: #5e1717;}
+         .docDeleteBtn {cursor:pointer;border-radius: 100%; background: darkgrey; margin:0 0.666em;}
+         .docSavedBox {font-size: 0.444em;color:gold;box-shadow: 1px 1px 1px gold;
+            padding: 0.222em;border-radius: 24em;
+         }
+         .docRowBox {display:flex;margin: 0.333em;align-items: center;}
+         .docTopicBtn {cursor:pointer;border-radius: 13px;background: slategrey;
             color: skyblue; font-size: 0.666em; padding: 6px;}
          .docTopicBtn:hover{border:2px solid steelblue}
         .mainBtn{margin:1em; color:darkblue;} 
@@ -53,6 +60,23 @@
          .mainBtn{margin:0.666em;}
          .subMenuBtn{font-size:0.666em;}
       }
+
+      /*  custom scroll bar */
+      /* .scrollBar2 {height:97%; overflow-x:hidden; background:#010111; border: 1px steelblue solid; border-radius:13px; padding:0.5em; } */
+      .scrollBarV {height:97%; overflow-x:scroll; background:#010111; border: 1px steelblue solid; border-radius:13px;  }
+      .scrollBarV::-webkit-scrollbar-track { background-color: #010213;  border-radius: 13px; }
+      .scrollBarV::-webkit-scrollbar { width: 0.666em; height: 100%; }
+      .scrollBarV::-webkit-scrollbar-thumb { background-color: #04223c; border-radius: 13px;
+      background-image: -webkit-linear-gradient(0deg, rgba(255, 255, 255, 0.6) 26%, transparent 26%, transparent 51%, rgba(255, 255, 255, -0.4) 51%, rgba(255, 255, 255, 0.6) 74%, transparent 74%, transparent);
+      }
+
+      /* .scrollBarH {height:97%; overflow-y:scroll; background:#010111; border: 1px steelblue solid; border-radius:13px; }
+      .scrollBarH::-webkit-scrollbar-track { background-color: #010213;  border-radius: 13px; }
+      .scrollBarH::-webkit-scrollbar { width: 100%; height: 1.3em; }
+      .scrollBarH::-webkit-scrollbar-thumb { background-color: #04223c; border-radius: 13px;
+      background-image: -webkit-linear-gradient(90deg, rgba(255, 255, 255, 0.6) 26%, transparent 26%, transparent 51%, rgba(255, 255, 255, -0.4) 51%, rgba(255, 255, 255, 0.6) 74%, transparent 74%, transparent);
+      } */
+
      </style>
      <aside class="topLeftBtn1">
       <span class="icon1" style="border-radius:100%;background:steelblue; 
@@ -68,7 +92,7 @@
       <header style="display:flex;justify-content:space-evenly;
         background-image: linear-gradient(grey, steelblue, black);
         box-shadow:0 0 14px 0px steelblue;border-radius:13px; margin:0 auto;
-        width:93%;">
+        width:93%; flex: 0 0 auto;">
          <button class="mainBtn" onclick="transcribeTXT()" style="border-radius:8px;
             background:grey; 
             cursor:pointer;box-shadow: inset 0px 0px 10px 0px limegreen;">
@@ -115,29 +139,89 @@
         <menu style="display:flex;justify-content:space-evenly;
             margin:0;padding:0;margin-top:-6px;border-radius: 30px;
             box-shadow: inset -2px -8px 17px 0px #3737cf;background: #182b3d;
-            ">
+            flex: 0 0 auto;">
+         <button class="subMenuBtn" onclick="newChatFn()">*new</button>
          <button class="subMenuBtn" onclick="primeFn()">prime🗝</button>
          <button class="subMenuBtn" onclick="omniFn()">omni🗝️</button>
          <button class="subMenuBtn" onclick="alphaFn()">alpha🔑</button>
+         <button class="subMenuBtn" onclick="sigFn()">sig<span style="font-size: 0.777em;
+            padding-left: 2px;">📅</span></button>
          <button class="subMenuBtn" onclick="ymdFn()">ymd<span style="font-size: 0.777em;
             padding-left: 2px;">📅</span></button>
+         <button class="subMenuBtn" onclick="hyphenFn()"><span style="font-size: 0.777em;
+            ">- </span></button>            
          <button class="subMenuBtn" onclick="hrFn()"><span style="font-size: 0.777em;
             ">__</span></button>
+         <button class="subMenuBtn" onclick="pipeFn()"><span style="font-size: 0.777em;
+            ">|</span></button>            
         </menu>
-      <section id="allchatBOX"  class="hiddenTab" style="width:80.888%;height:100%;margin: 0 2% 0 2%;
-      border-radius: 13px; border: solid 1px steelblue; box-shadow: 1px 1px 11px 0px cyan;
-      padding: 4% 0 4% 4%; color: cyan;">
-         <header style="font-size: 0.777em;">SAVE CHATS (by title): </header>
-         <article id="btnContainer" style="display:flex;flex-direction:column;
-               align-items:flex-start;">
-         </article>
-      </section>
-      <textarea id="textareaBOX"
-        style="width:80.888%;height:100%;margin: 0 2% 0 2%;
+        <section id="allchatBOX"  class="hiddenTab scrollBarV" style="width:80.888%;
+        /* height:100%; */
+        margin: 0 2% 0 2%;
+        border-radius: 13px; border: solid 1px steelblue; box-shadow: 1px 1px 11px 0px cyan;
+        padding: 4% 0 4% 4%; color: cyan;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            max-height: 60%;
+    overflow-y: scroll;
+            "
+        >
+           <header style="font-size: 0.777em; display:flex;flex: 0 0 auto;">🌎 SAVE CHATS to IPFS 🛰️: </header>
+           <aside id="ipfsInput" style="display:flex; flex: 0 0 auto;">
+              <div style="font-size:0.666em;padding: 1em;">IPFS KEY:&nbsp;
+                  <input id="ipfsKey" style="border-radius: 13px;
+                  padding: 0.444em;font-size: 0.888em;background: #37d6f3;color: black;">
+                   <!-- </div> -->
+              <!-- <div style="font-size:0.666em;padding: 1em;"> -->
+               & SECRET:&nbsp;
+                  <input id="ipfsSecret" type="password" style="border-radius: 13px;
+                  padding: 0.444em;font-size: 0.888em;background: #37d6f3;color: black;"> 
+                  <button onclick="ipfsInit()" style="font-size:0.666em;padding:0.444em;border-radius:13px;
+                  box-shadow: inset -1px -1px 4px 1px rgb(83, 93, 204);cursor:pointer;background: #37d6f3;">
+                  CONNECT</button>
+              </div>
+           </aside>
+           <aside id="ipfsConnected" style="display:none;width:155px;
+              padding: 13px;border-radius: 13px; margin: 1em;
+              flex: 0 0 auto;
+              box-shadow: inset -1px -1px 4px 1px rgb(83, 93, 204);">
+              ⚡ Connected to IPFS 
+           </aside>
+           <hr></hr>
+           <header style="display:flex;flex: 0 0 auto;">
+            <button onclick="backChatFn()"  style="font-size:0.666em;padding:0.444em;border-radius:13px;
+            box-shadow: inset -1px -1px 4px 1px rgb(112, 123, 243);cursor:pointer;background: #be75c8;">
+            ⏪ Back to Chat</button>
+            <button onclick="newChatFn()"  style="font-size:0.666em;padding:0.444em;border-radius:13px;
+            box-shadow: inset -1px -1px 4px 1px rgb(112, 123, 243);cursor:pointer;background: #be75c8;">
+            📜 New Chat</button>
+           </header>
+           <article id="allChatsMenu" style="display:flex;flex-direction:column;
+                 align-items:flex-start;
+                 flex:1;
+                 /* overflow-y:scroll;max-height: 70%; */
+                  margin-right: 1%;">
+           </article>
+           <hr>
+           <footer id="ipfsCorpusFooter" style="display:flex;justify-content: center;" class="hiddenTab">
+            <button id="copyIPFSBtn" onclick="docCopyIPFSCorpusFn()"  style="font-size:0.666em;padding:0.444em;border-radius:13px;
+            box-shadow: inset -1px -1px 4px 1px rgb(112, 123, 243);cursor:pointer;background: #be75c8;">
+            🎭 copy corpus (of ipfs hashes)</button>                         
+            <button id="loadIPFSBtn" onclick="docloadIPFSCorpusFn()"  style="font-size:0.666em;padding:0.444em;border-radius:13px;
+            box-shadow: inset -1px -1px 4px 1px rgb(112, 123, 243);cursor:pointer;background: #be75c8;">
+            💎 load corpus (of ipfs hashes)</button>                         
+           </footer>
+        </section>
+      <textarea id="textareaBOX" onmouseup="setCursorRowFn()" class="scrollBarV"
+        style="width:80.888%;
+        margin: 0 2% 0 2%;
+        display:flex;flex:1;
         border-radius: 13px; border: solid 1px steelblue; box-shadow: 1px 1px 11px 0px cyan;
         padding: 4% 0 4% 4%; color: cyan; line-height: 2.444em;" spellcheck="false"
         onkeyup="keyupTXT();">Click speak, and say something...</textarea>
     <menu style="display:flex;justify-content:space-evenly;background: #182b3d;
+        flex: 0 0 auto;
         border-radius: 30px;margin:0;padding:0;margin-bottom:-6px;
         box-shadow: inset -5px 7px 8px 0px #472c88;">
         <button class="subMenuBtn" onclick="undoFn()">↶undo</button>
@@ -148,13 +232,21 @@
     </menu>
       <footer style="display:flex;justify-content:space-evenly;width:90%;margin:0 auto; 
       margin-bottom:0.666%;
+      flex: 0 0 auto;
       background-image: linear-gradient(grey, steelblue, black);
       box-shadow:0 0 14px 0px steelblue;border-radius:13px;">
-       <button class="" onclick="saveChatFn()" style="margin:1em;border-radius:8px;background:grey;
+         <button class="mainBtn" onclick="transcribeTXT()" style="border-radius:8px;
+         background:grey; 
+         cursor:pointer;box-shadow: inset 0px 0px 10px 0px limegreen;">
+         <span style="border-radius:100%;background:limegreen;
+           border:1px solid grey;">
+         🎤</span><span class="btnTXT hoverTXT">SPEAK</span>
+      </button>      
+       <!--button class="" onclick="saveChatIPFSFn()" style="margin:1em;border-radius:8px;background:grey;
           cursor:pointer;box-shadow: inset -1px -1px 4px 1px gold;">
           <span style="border-radius:100%;background:gold;border:1px solid grey;">
             💾</span> <span class="btnTXT hoverTXT">SAVE CHAT</span>
-       </button>
+       </button-->
        <button class="" onclick="copyChatFn()" style="margin:1em;border-radius:8px;background:grey;
           cursor:pointer;box-shadow: inset -1px -1px 4px 1px orangered;">
           <span style="border-radius:100%;background:orangered;border:1px solid grey;">
@@ -166,25 +258,40 @@
             🎡</span> <span class="btnTXT hoverTXT">ALL CHATS</span>
        </button>
       </footer>
-      <legal style="color:darkslategray;font-size: 0.666em;">copyright 2020-2023 netcinematics, all rights reserved.</legal>
+      <legal style="color:darkslategray;font-size: 0.666em;
+      display:flex;flex: 0 0 auto;">copyright 2020-2023 netcinematics, all rights reserved.</legal>
+      <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>      
       <script>
          const currentDate = new Date();
          const year = currentDate.getFullYear();
          const month = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // Adding 1 because months are zero-indexed
          const day = currentDate.getDate().toString().padStart(2, '0');
          let current_ymd = `YMD_${year}_${month}_${day}`;
+         let current_sig = `~:)`;
          let textareaBOX = document.getElementById('textareaBOX');
          let allchatBOX = document.getElementById('allchatBOX');
          let textareaTXT = [], selectedTXT='';
          let stateListeningBox = document.getElementById('listeningBox');
          let stateNotListeningBox = document.getElementById('notlisteningBox');
+         let isListening = false;
          let stateErrorBox = document.getElementById('errorBox');
          let stateSavedBox = document.getElementById('savedBox');
          let stateCopiedBox = document.getElementById('copiedBox');
          let transcript, txtline, txttgt;
          let all_chat_docs = [], chat_doc = {};
+         let ipfsInput = document.getElementById('ipfsInput');
+         let ipfsConnected = document.getElementById('ipfsConnected');
+         let ipfsSecretVal = '';         
+         let ipfsKeyVal = '';
+         let ipfsCorpus = [];
+         let txtBOXLineNumber = 0;
          let recognition = new webkitSpeechRecognition() || new SpeechRecognition();       
          let transcribeTXT = () => {
+            if(textareaBOX.classList.contains('hiddenTab')){//not visible, make visible.
+               allchatBOX.classList.add('hiddenTab')
+               textareaBOX.classList.remove('hiddenTab')
+               return;
+            }
             recognition.onstart = () => { //------------------LISTENING
                 toggleRecordState(true);
             }
@@ -192,16 +299,27 @@
                transcript = e.results[0][0].transcript;
                textareaTXT.push(transcript)
                textareaBOX.value = textareaTXT.join('\n');
-                toggleRecordState(false);
+               toggleRecordState(false);
+               txtBOXLineNumber = textareaTXT.length;
+               if(txtBOXLineNumber===1){ //skip title line
+                  // console.log('do not autosave')
+               } else { //autosave every utterance
+                  // console.log('autosave')
+                  saveChatLocalStorageFn();
+               }
             }
             recognition.start();
+            //reset text selection
+            // txtBOXLineNumber = 0;
          }
          let toggleRecordState = (state) => { 
             if(state){//LISTENING
+               isListening = true;
                 stateListeningBox.style.display = "inline";
                stateNotListeningBox.style.display = "none";   
                stateErrorBox.style.display = "none";   
             }else{ //NOT LISTENING
+               isListening = false;
                 stateListeningBox.style.display = "none";
                 stateNotListeningBox.style.display = "inline";        
                 stateErrorBox.style.display = "none";        
@@ -261,7 +379,15 @@
                textareaBOX.focus();
             }else{ showErrorMSG('⚠️ select any word...') }
           }
-         let ymdFn = () => { 
+         let sigFn = () => { //author
+            transcript = textareaBOX.value;
+            textareaTXT = transcript.split('\n')             
+            if(textareaTXT && textareaTXT.length>0){
+               textareaTXT.push(current_sig);
+               textareaBOX.value = textareaTXT.join('\n');
+            }             
+         }
+         let ymdFn = () => { //year month date end of doc
             transcript = textareaBOX.value;
             textareaTXT = transcript.split('\n')             
             if(textareaTXT && textareaTXT.length>0){
@@ -269,13 +395,44 @@
                textareaBOX.value = textareaTXT.join('\n');
             }            
           }
-          let hrFn = () => {
+          let hrFn = () => { //add hard rule line at end of doc
             transcript = textareaBOX.value;
             textareaTXT = transcript.split('\n')             
             if(textareaTXT && textareaTXT.length>0){
                textareaTXT.push('<hr></hr>');
                textareaBOX.value = textareaTXT.join('\n');
             }             
+         }             
+         
+          let hyphenFn = () => { //add hyphen to begin line
+            transcript = textareaBOX.value;
+            textareaTXT = transcript.split('\n')
+            if(textareaTXT && textareaTXT.length>0){
+               if(textareaTXT[textareaTXT.length-1].indexOf('- ')===0){
+                  txtline = textareaTXT[textareaTXT.length-1].replace('- ','')
+               } else {
+                  txtline = '- '+textareaTXT[textareaTXT.length-1]
+               }
+                textareaTXT[textareaTXT.length-1] = txtline;
+                textareaBOX.value = textareaTXT.join('\n');
+                toggleRecordState(false);
+                recognition.stop();
+            }  
+         }             
+          let pipeFn = () => { // add pipe to begin line
+            transcript = textareaBOX.value;
+            textareaTXT = transcript.split('\n')
+            if(textareaTXT && textareaTXT.length>0){
+               if(textareaTXT[textareaTXT.length-1].indexOf('| ')===0){
+                  txtline = textareaTXT[textareaTXT.length-1].replace('| ','')
+               } else {
+                  txtline = '| '+textareaTXT[textareaTXT.length-1]
+               }
+                textareaTXT[textareaTXT.length-1] = txtline;
+                textareaBOX.value = textareaTXT.join('\n');
+                toggleRecordState(false);
+                recognition.stop();
+            }              
          }             
          let undoFn = () => { 
             transcript = textareaBOX.value;
@@ -284,12 +441,23 @@
                textareaTXT = textareaTXT.slice(0,textareaTXT.length-1)
                textareaBOX.value = textareaTXT.join('\n');
             }
-         };         
-         let titlelineFn = () => {  
+         }; 
+         let setCursorRowFn = ()=>{
+            txtBOXLineNumber = textareaBOX.value.substr(0, textareaBOX.selectionStart).split("\n").length;
+         }        
+         let titlelineFn = () => {  // Add # to begin line
+            // txtBOXLineNumber = textareaBOX.value.substr(0, textareaBOX.selectionStart).split("\n").length;
+            console.log('selection start',textareaBOX.selectionStart)
             transcript = textareaBOX.value;
             textareaTXT = transcript.split('\n')
+            debugger; //3 to 6?
+            txtBOXLineNumber = textareaBOX.value.substr(0, textareaBOX.selectionStart).split("\n").length;
             if(textareaTXT && textareaTXT.length>0){
-                txtline = textareaTXT[textareaTXT.length-1]
+               if(txtBOXLineNumber){
+                  txtline = textareaTXT[txtBOXLineNumber-1]; //SELECTED LINE
+               } else {
+                  txtline = textareaTXT[textareaTXT.length-1]; //LAST LINE
+               }
                 if(txtline.charAt(0)==='#'){
                     if(txtline.charAt(1)==='#'){
                         if(txtline.charAt(2)==='#'){// back to blank
@@ -304,13 +472,42 @@
                 }else{ //add 1
                     txtline = '# '+txtline;
                 }
-                textareaTXT[textareaTXT.length-1] = txtline;
+                if(txtBOXLineNumber){ //SELECTED LINE
+                  console.log('selection',txtBOXLineNumber) //3 to 6
+                  textareaTXT[txtBOXLineNumber-1] = txtline;
+               } else {//LAST LINE
+                  textareaTXT[textareaTXT.length-1] = txtline;
+               }                
                 textareaBOX.value = textareaTXT.join('\n');
                 toggleRecordState(false);
                 recognition.stop();
+                setCursorToLine(txtBOXLineNumber); 
             }
-         };          
-         let numberlineFn = () => {  
+         };   
+
+         let setCursorToLine = (lineNumber) => {
+         
+         // Split the textarea content into an array of lines
+         const lines = textareaBOX.value.split('\n');
+         
+         // Check if the line number is within bounds
+         if (lineNumber > 0 && lineNumber <= lines.length) {
+            // Calculate the character position to move to the start of the specified line
+            let charPosition = 0;
+            for (let i = 1; i < lineNumber; i++) {
+                  charPosition += lines[i - 1].length + 1; // Add 1 for the newline character
+            }
+            
+            // Set the cursor position
+            textareaBOX.selectionStart = charPosition;
+            textareaBOX.selectionEnd = charPosition;
+            
+            // Focus on the textarea to make the cursor visible
+            textareaBOX.focus();
+         }
+      }
+   
+         let numberlineFn = () => {  //add 1. to begin line
             transcript = textareaBOX.value;
             textareaTXT = transcript.split('\n')
             if(textareaTXT && textareaTXT.length>0){
@@ -332,7 +529,7 @@
             }
          }
       
-         let quotelineFn = () => { 
+         let quotelineFn = () => { //add > to begin line
             transcript = textareaBOX.value;
             textareaTXT = transcript.split('\n')
             if(textareaTXT && textareaTXT.length>0){
@@ -347,7 +544,7 @@
                 recognition.stop();
             }            
          }
-         let endlineFn = () => {  
+         let endlineFn = () => {  // add endline chars.
             transcript = textareaBOX.value;
             textareaTXT = transcript.split('\n')
             if(textareaTXT && textareaTXT.length>0){
@@ -365,7 +562,21 @@
                 recognition.stop();
             }
          };   
-         let saveChatFn = () => { //
+         let backChatFn = () => { 
+            allchatBOX.classList.add('hiddenTab')
+            textareaBOX.classList.remove('hiddenTab')
+         }
+         let newChatFn = () => { 
+            allchatBOX.classList.add('hiddenTab')
+            textareaBOX.classList.remove('hiddenTab')
+            textareaBOX.value = '# New Chat...'
+            textareaTXT = [], selectedTXT='',isListening=false,txtBOXLineNumber = 0;
+         }
+         let saveChatLocalStorageFn = () => { // SAVE LOCAL STORAGE on txtup
+            txtBOXLineNumber = textareaBOX.value.substr(0, textareaBOX.selectionStart).split("\n").length;
+            if(txtBOXLineNumber===1){ //do not auto save title line.
+               return
+            }
             let updated_doc = false;
             txttgt = getCurrentDocTitle();
             all_chat_docs = (localStorage.all_chat_docs)?
@@ -380,9 +591,41 @@
                   break;
                }
             }
-            if(!updated_doc){
-               all_chat_docs.push(chat_doc)
-            } //SAVE TO LOCAL STORAGE
+            if(!updated_doc){ all_chat_docs.push(chat_doc) } //SAVE TO LOCAL STORAGE
+            localStorage.all_chat_docs = JSON.stringify(all_chat_docs)
+            //saved msg
+            // stateSavedBox.style.display = "inline";
+            // stateListeningBox.style.display = "none";
+            // stateNotListeningBox.style.display = "none";              
+            // setTimeout( ()=>{
+               stateSavedBox.style.display = "none";
+               stateListeningBox.style.display = "none";
+               stateNotListeningBox.style.display = "inline";  
+            //    selectedTXT = '';
+            // },3000)                        
+         };   
+         let saveChatIPFSFn = () => { //         SAVE to IPFS
+            if(!ipfsKeyVal || !ipfsSecretVal ) {
+               showErrorMSG('🛰️ no ipfs')
+               return;
+            }
+            return; //TODO PIN TO IPFS with HASH
+
+            let updated_doc = false;
+            txttgt = getCurrentDocTitle();
+            all_chat_docs = (localStorage.all_chat_docs)?
+               JSON.parse( localStorage.all_chat_docs ):[];
+            chat_doc = new Object();
+            chat_doc.title = txttgt;
+            chat_doc.txt = textareaBOX.value;               
+            for(let i = 0; i<all_chat_docs.length;i++){
+               if(all_chat_docs[i].title===txttgt){ //replace
+                  all_chat_docs[i] = chat_doc
+                  updated_doc = true;
+                  break;
+               }
+            }
+            if(!updated_doc){ all_chat_docs.push(chat_doc) } //SAVE TO LOCAL STORAGE
             localStorage.all_chat_docs = JSON.stringify(all_chat_docs)
             //saved msg
             stateSavedBox.style.display = "inline";
@@ -393,8 +636,9 @@
                stateListeningBox.style.display = "none";
                stateNotListeningBox.style.display = "inline";  
                selectedTXT = '';
-            },3000)                        
-         };   
+            },3000)    
+         };     
+
          let copyChatFn = () => { 
             textareaBOX.select();
             transcript = textareaBOX.value;
@@ -411,12 +655,13 @@
                selectedTXT = '';
             },3000)               
             setTimeout( ()=>{document.getSelection().collapseToEnd()},2000)
-         };          
+         };     
+
          let allChatFn = () => { 
             if(allchatBOX.classList.contains('hiddenTab') ){
                allchatBOX.classList.remove('hiddenTab')
                textareaBOX.classList.add('hiddenTab')
-               docLoad();
+               renderAllChatMenu();
             } else {
                allchatBOX.classList.add('hiddenTab')
                textareaBOX.classList.remove('hiddenTab')
@@ -432,14 +677,15 @@
             }
             return ''
          }
-         let docLoad = () => { //reload all doc view
+         let renderAllChatMenu = () => { //reload all doc view
             //load data for view from local storage
             all_chat_docs = (localStorage.all_chat_docs)?JSON.parse( localStorage.all_chat_docs ):[];
-            const btnContainer = document.getElementById('btnContainer');
-            btnContainer.innerHTML='';
+            const allChatsMenu = document.getElementById('allChatsMenu');
+            allChatsMenu.innerHTML='';
             // Map over the array and create buttons
             all_chat_docs.forEach(item => {
                const section1 = document.createElement('section');
+               section1.classList.add('docRowBox')
                const button1 = document.createElement('button');
                button1.textContent = item.title;
                button1.classList.add('docTopicBtn')
@@ -448,12 +694,55 @@
                const button2 = document.createElement('button');
                button2.textContent = '🗑️';
                button2.classList.add('docDeleteBtn')
-               button2.onclick = function() { docDelete(item.title); };
-               section1.appendChild(button2);                  
-               btnContainer.appendChild(section1);                  
-            });            
+               button2.onclick = function() { docDeleteFn(item.title) };
+               section1.appendChild(button2);  
+               if(ipfsKeyVal && ipfsSecretVal ) { //ADD IPFS BTN
+                  // const button3 = document.createElement('button');
+                  // button3.textContent = '🌲 save';
+                  // button3.classList.add('docSaveBtn')
+                  // button3.onclick = function() { docSaveFn(item.title); };
+                  // section1.appendChild(button3); 
+                  txttgt = savedInCorpus(item.title)
+                  debugger;
+                  if(!txttgt){
+                     const button3 = document.createElement('button');
+                     button3.textContent = '🎈 pin';
+                     button3.classList.add('docSaveBtn')
+                     button3.onclick = function(e) { docSaveFn(item) };
+                     section1.appendChild(button3);                
+                  }else if(editForCorpus(txttgt)){ //DOC SAVED, with EDITS
+                     debugger;
+                     //SHOW UPDATE BTN.
+                     txttgt;
+                     const button4 = document.createElement('button');
+                     button4.textContent = '🎈 pin';
+                     button4.classList.add('docSaveBtn')
+                     button4.onclick = function(e) { docSaveFn(item) };
+                     section1.appendChild(button4);                             
+                     const aside5 = document.createElement('aside');
+                     aside5.textContent = '🎆 ' + txttgt.hash;
+                     aside5.classList.add('docSavedBox')
+                     section1.appendChild(aside5);                      
+                  }else{ //DOC is SAVED already.
+                     const aside4 = document.createElement('aside');
+                     aside4.textContent = '🎇 ' + txttgt.hash;
+                     aside4.classList.add('docSavedBox')
+                     section1.appendChild(aside4); 
+                  }
+                  
+               }                
+               allChatsMenu.appendChild(section1);    
+            }); 
+            //Display copy ipfs corpus 
+            if(ipfsSecretVal && ipfsKeyVal ){
+               const ipfsCorpusFooter = document.getElementById('ipfsCorpusFooter');
+               ipfsCorpusFooter.classList.remove('hiddenTab') 
+            }      
          }
          let docLookup = (text) => { //load txt, and switch to view
+
+            //check for localstorage hash,  before local storage docs???
+            
             transcript = '';
             all_chat_docs = (localStorage.all_chat_docs)?
                JSON.parse( localStorage.all_chat_docs ):[];
@@ -468,7 +757,31 @@
             allchatBOX.classList.add('hiddenTab')
             textareaBOX.classList.remove('hiddenTab') 
          } 
-         let docDelete = (text) => { //lookup, remove from local storage.
+         let docSaveFn = (item) => { //save doc to IPFS
+            if(!ipfsKeyVal || !ipfsSecretVal ) {
+               showErrorMSG('🛰️ no ipfs')
+               return;
+            }
+            IPFSPinaFile(item);
+         }
+         let docloadIPFSCorpusFn = () => { //copy buffer, ipfsCorpus.
+         }
+         let docCopyIPFSCorpusFn = () => { //copy buffer, ipfsCorpus.
+            //successfull visual of COPY
+            stateCopiedBox.style.display = "inline";
+            stateListeningBox.style.display = "none";
+            stateNotListeningBox.style.display = "none"; 
+            copyCorpusFn();             
+            setTimeout( ()=>{
+               stateCopiedBox.style.display = "none";
+               stateListeningBox.style.display = "none";
+               stateNotListeningBox.style.display = "inline";  
+            },3000)             
+         }
+         let copyCorpusFn = () => { 
+            navigator.clipboard.writeText(JSON.stringify(ipfsCorpus) );
+         }
+         let docDeleteFn = (text) => { //lookup, remove from local storage.
             all_chat_docs = (localStorage.all_chat_docs)?
                JSON.parse( localStorage.all_chat_docs ):[];
             for(var i=0; i<all_chat_docs.length;i++){
@@ -476,13 +789,31 @@
                   // transcript = all_chat_docs[i].txt;
                   all_chat_docs.splice(i,1)
                   localStorage.all_chat_docs = JSON.stringify(all_chat_docs)
-                  docLoad();
+                  renderAllChatMenu();
                   break; //splice object out
                }
             }
             // allchatBOX.classList.add('hiddenTab')
             // textareaBOX.classList.remove('hiddenTab') 
          } 
+
+         let loadCorpusFromLocalStorage = () => {
+            ipfsCorpus = (localStorage.ipfsCorpus)?
+               JSON.parse( localStorage.ipfsCorpus ):[];
+         }; loadCorpusFromLocalStorage();
+
+         let editForCorpus = (title) => {
+            debugger;
+            return true;
+         }
+         let savedInCorpus = (title) => {
+            for(let i=0; i<ipfsCorpus.length;i++){
+               if(title===ipfsCorpus[i].title){ 
+                  return ipfsCorpus[i];
+               }
+            }
+            return null;
+         }
          function setCharAt(str,idx,chr) {
             if(idx > str.length-1) return str;
             return str.substring(0,idx) + chr + str.substring(idx+1);
@@ -490,6 +821,8 @@
          let keyupTXT = (e) => {
             transcript = textareaBOX.value;
             textareaTXT = transcript.split('\n')
+            //AutoSave Local Storage.
+            saveChatLocalStorageFn();
          }
          let showErrorMSG = (err) => {
             console.log(err)
@@ -515,7 +848,89 @@
             textareaTXT.push("Try CHROME browser. ~ : )")
             textareaBOX.innerHTML = textareaTXT.join('\n');
             toggleRecordState(false);
-        });          
+        }); 
+
+        document.addEventListener('keyup', function(event) {
+            if (event.altKey && event.code === 'Backquote') { // Alt + ` is pressed
+               console.log('Hot key [alt+~] : start and stop transcribe.') 
+               if(isListening){
+                  stopTXT();
+               } else {
+                  transcribeTXT();               
+               }
+            }
+         });
+        //------------------------  IPFS
+        const ipfsInit = ()=>{
+            //if keys are local, load local
+            // if(localStorage.ipfsKeyVal && localStorage.ipfsSecretVal){
+            // if(localStorage.ipfsKeyVal && localStorage.ipfsSecretVal){
+            //     ipfsKeyVal = localStorage.ipfsKeyVal;
+            //     ipfsSecretVal = localStorage.ipfsSecretVal;
+            // } else {
+            ipfsKeyVal = ipfsKey.value;
+            ipfsSecretVal = ipfsSecret.value;
+            // }
+            if(!ipfsKeyVal || !ipfsSecretVal ) {console.log('no ipfs'); return;}
+            const url = `https://api.pinata.cloud/data/testAuthentication`;
+            return axios
+                .get(url, {
+                    headers: {
+                        'pinata_api_key': ipfsKeyVal,
+                        'pinata_secret_api_key': ipfsSecretVal
+                    }
+                })
+                .then(function (response) {
+                    if(response.data.message === 'Congratulations! You are communicating with the Pinata API!'){
+                        console.log('Connected to IPFS')
+                    }
+                    ipfsConnected.style.display = "block";
+                    ipfsInput.style.display = "none";  
+                    //rerender all chats display
+                    renderAllChatMenu();
+                })
+                .catch(function (error) {
+                    console.log(error)
+                });
+            }; //ipfsInit();  
+            
+            
+            const IPFSPinaFile = (item)=>{
+               if(!item || !item.title){ console.log('no data'); return; }
+               //gateway = https://gateway.pinata.cloud/ipfs/QmX3Xj4g5HcqMhudiFz4zWSdx3JJiVuLEmvopRKiD1bsi8/
+               // const url =  'https://api.pinata.cloud/pinning/pinFileToIPFS';
+               // const url = `https://api.pinata.cloud/pinning/pinJSONToIPFS`;
+               // const data = textareaBOX.value
+               ipfsKeyVal = ipfsKey.value;
+               ipfsSecretVal = ipfsSecret.value;
+               if(!ipfsKeyVal || !ipfsSecretVal ) {return;}
+               // return axios.post('https://api.pinata.cloud/pinning/pinFileToIPFS',
+               return axios.post('https://api.pinata.cloud/pinning/pinJSONToIPFS',
+                  JSON.stringify(item),
+                  //data,
+                  { headers: {
+                        // 'Content-Type': `multipart/form-data; boundary= ${data._boundary}`,
+                        'pinata_api_key': ipfsKeyVal,
+                        'pinata_secret_api_key': ipfsSecretVal
+                     }
+                  }).then(function (response) { //on successful PIN
+                     let IpfsHash = response.data.IpfsHash;
+                     let IpfsTime = response.data.Timestamp;
+                     ipfsCorpus.push({title:item.title,hash:IpfsHash,time:IpfsTime})
+                     localStorage.ipfsCorpus = JSON.stringify(ipfsCorpus)
+                     renderAllChatMenu();
+                        //response.data.Timestamp = '2023-10-01T22:03:20.066Z'
+                        //response.data.IpfsHash = 'QmX3Xj4g5HcqMhudiFz4zWSdx3JJiVuLEmvopRKiD1bsi8'
+                     // response.data.IpfsHash
+                     // 'QmeWPa9vyrRfXkJhkU4BJN3bsF9KHqde4KMZzgjfVZwFKT'
+                     // response.data.Timestamp
+                     // '2023-10-07T22:28:11.643Z'
+                     // JSON.parse(response.config.data)
+                  }).catch(function (error) {
+                     debugger;
+                  });
+            };
+
       </script> 
    </body>
 </html>
