@@ -18,8 +18,9 @@
          .topRightBtn2 .icon1 {font-size:1em;padding-bottom:6px;}
          .docSaveBtn {cursor:pointer;border-radius: 22px;background: #c975a0;color: #5e1717;}
          .docDeleteBtn {cursor:pointer;border-radius: 100%; background: darkgrey; margin:0 0.666em;}
-         .docSavedBox {font-size: 0.444em;color:gold;box-shadow: 1px 1px 1px gold;
-            padding: 0.222em;border-radius: 24em;
+         .docUpdateBtn {cursor:pointer;border-radius: 22px;background: #6bb8e1;color: #314481;}
+         .docSavedBtn {font-size: 0.444em;color:gold;box-shadow: 1px 1px 1px gold;
+            padding: 0.222em;border-radius: 24em;background: black; cursor: pointer;
          }
          .docRowBox {display:flex;margin: 0.333em;align-items: center;}
          .docTopicBtn {cursor:pointer;border-radius: 13px;background: slategrey;
@@ -167,7 +168,15 @@
     overflow-y: scroll;
             "
         >
-           <header style="font-size: 0.777em; display:flex;flex: 0 0 auto;">🌎 SAVE CHATS to IPFS 🛰️: </header>
+           <header style="font-size: 0.777em; display:flex;flex: 0 0 auto;">
+            🌎 SAVE CHATS to IPFS 🛰️: 
+            <aside id="ipfsConnected" style="display:none;width:133px;
+            border-radius: 10px; margin-left: 1em;
+            flex: 0 0 auto;
+            box-shadow: inset -1px -1px 4px 1px rgb(83, 93, 204);">
+            &nbsp;&nbsp;⚡ Connected to IPFS. 
+         </aside>
+           </header>
            <aside id="ipfsInput" style="display:flex; flex: 0 0 auto;">
               <div style="font-size:0.666em;padding: 1em;">IPFS KEY:&nbsp;
                   <input id="ipfsKey" style="border-radius: 13px;
@@ -182,12 +191,12 @@
                   CONNECT</button>
               </div>
            </aside>
-           <aside id="ipfsConnected" style="display:none;width:155px;
+           <!-- <aside id="ipfsConnected" style="display:none;width:155px;
               padding: 13px;border-radius: 13px; margin: 1em;
               flex: 0 0 auto;
               box-shadow: inset -1px -1px 4px 1px rgb(83, 93, 204);">
               ⚡ Connected to IPFS 
-           </aside>
+           </aside> -->
            <hr></hr>
            <header style="display:flex;flex: 0 0 auto;">
             <button onclick="backChatFn()"  style="font-size:0.666em;padding:0.444em;border-radius:13px;
@@ -207,7 +216,10 @@
            <footer id="ipfsCorpusFooter" style="display:flex;justify-content: center;" class="hiddenTab">
             <button id="copyIPFSBtn" onclick="docCopyIPFSCorpusFn()"  style="font-size:0.666em;padding:0.444em;border-radius:13px;
             box-shadow: inset -1px -1px 4px 1px rgb(112, 123, 243);cursor:pointer;background: #be75c8;">
-            🎭 copy corpus (of ipfs hashes)</button>                         
+            🎭 copy corpus (of ipfs hashes)</button>   
+            <input id="newCorpusArray" style="border-radius: 10px;color: cyan;
+            background: #040631;font-size: 0.555em;
+            margin: 0 1em;"></input>                      
             <button id="loadIPFSBtn" onclick="docloadIPFSCorpusFn()"  style="font-size:0.666em;padding:0.444em;border-radius:13px;
             box-shadow: inset -1px -1px 4px 1px rgb(112, 123, 243);cursor:pointer;background: #be75c8;">
             💎 load corpus (of ipfs hashes)</button>                         
@@ -703,31 +715,48 @@
                   // button3.onclick = function() { docSaveFn(item.title); };
                   // section1.appendChild(button3); 
                   txttgt = savedInCorpus(item.title)
-                  debugger;
                   if(!txttgt){
                      const button3 = document.createElement('button');
                      button3.textContent = '🎈 pin';
                      button3.classList.add('docSaveBtn')
                      button3.onclick = function(e) { docSaveFn(item) };
                      section1.appendChild(button3);                
-                  }else if(editForCorpus(txttgt)){ //DOC SAVED, with EDITS
-                     debugger;
-                     //SHOW UPDATE BTN.
-                     txttgt;
+                  // }
+                  // else if(editForCorpus(txttgt)){ //DOC SAVED, with EDITS
+                  //    debugger;
+                  //    //SHOW UPDATE BTN.
+                  //    txttgt;
+                  //    const button4 = document.createElement('button');
+                  //    button4.textContent = '🌀 update';
+                  //    button4.classList.add('docUpdateBtn')
+                  //    button4.onclick = function(e) { docUpdateFn(item) };
+                  //    section1.appendChild(button4);                             
+                  //    const aside5 = document.createElement('aside');
+                  //    aside5.textContent = '🎆 ' + txttgt.hash;
+                  //    aside5.classList.add('docSavedBtn')
+                  //    section1.appendChild(aside5);                      
+                  // } else{ //DOC is SAVED and not edited.
+                  //    const aside4 = document.createElement('aside');
+                  //    aside4.textContent = '🎇 ' + txttgt.hash;
+                  //    aside4.classList.add('docSavedBtn')
+                  //    section1.appendChild(aside4); 
+                  // }
+                  } else{ //DOC is SAVED and not edited.
+                     //TODO only visible when edited? corpus edited?
                      const button4 = document.createElement('button');
-                     button4.textContent = '🎈 pin';
-                     button4.classList.add('docSaveBtn')
-                     button4.onclick = function(e) { docSaveFn(item) };
-                     section1.appendChild(button4);                             
-                     const aside5 = document.createElement('aside');
-                     aside5.textContent = '🎆 ' + txttgt.hash;
-                     aside5.classList.add('docSavedBox')
-                     section1.appendChild(aside5);                      
-                  }else{ //DOC is SAVED already.
-                     const aside4 = document.createElement('aside');
-                     aside4.textContent = '🎇 ' + txttgt.hash;
-                     aside4.classList.add('docSavedBox')
-                     section1.appendChild(aside4); 
+                     button4.textContent = '🌀 upload edit';
+                     button4.classList.add('docUpdateBtn')
+                     button4.onclick = function(e) { docUpdateFn(item) };
+                     section1.appendChild(button4);  
+                     const button5 = document.createElement('button');
+                     button5.textContent = '🎇 ' + txttgt.hash;
+                     button5.classList.add('docSavedBtn')
+                     button5.onclick = function(e) { docLoadHashFn(txttgt.hash) };
+                     section1.appendChild(button5);                                              
+                     // const aside4 = document.createElement('aside');
+                     // aside4.textContent = '🎇 ' + txttgt.hash;
+                     // aside4.classList.add('docSavedBtn')
+                     // section1.appendChild(aside4); 
                   }
                   
                }                
@@ -764,7 +793,34 @@
             }
             IPFSPinaFile(item);
          }
+
+         let docLoadHashFn = (hash) => { //load view with hash doc
+            if(!ipfsKeyVal || !ipfsSecretVal ) {
+               showErrorMSG('🛰️ no ipfs')
+               return;
+            }
+            IPFSLoadPinaFile(hash);          
+         }
+         let docUpdateFn = (item) => { //edited doc, for new hash.
+            if(!ipfsKeyVal || !ipfsSecretVal ) {
+               showErrorMSG('🛰️ no ipfs')
+               return;
+            }
+            IPFSPinaFile(item);
+         }
          let docloadIPFSCorpusFn = () => { //copy buffer, ipfsCorpus.
+            let newCorpus = document.getElementById('newCorpusArray');
+            let newCorpusARR = [];
+            try{
+               if(!newCorpus){return;}
+               newCorpusARR = JSON.parse(newCorpus.value)
+               ipfsCorpus = newCorpusARR;
+            } catch(e){
+               console.log('bad format')
+               return;
+            }
+            newCorpus.value = '';
+            renderAllChatMenu();
          }
          let docCopyIPFSCorpusFn = () => { //copy buffer, ipfsCorpus.
             //successfull visual of COPY
@@ -802,17 +858,20 @@
                JSON.parse( localStorage.ipfsCorpus ):[];
          }; loadCorpusFromLocalStorage();
 
-         let editForCorpus = (title) => {
-            debugger;
-            return true;
-         }
+         // let editForCorpus = (tgt) => {
+         //    debugger;
+         //    //compare targets to
+         //    return true;
+         // }
          let savedInCorpus = (title) => {
+            let latestVersion = null;
             for(let i=0; i<ipfsCorpus.length;i++){
                if(title===ipfsCorpus[i].title){ 
-                  return ipfsCorpus[i];
+                  latestVersion = ipfsCorpus[i];
+                  // return ipfsCorpus[i];
                }
             }
-            return null;
+            return latestVersion;
          }
          function setCharAt(str,idx,chr) {
             if(idx > str.length-1) return str;
@@ -860,77 +919,93 @@
                }
             }
          });
-        //------------------------  IPFS
-        const ipfsInit = ()=>{
-            //if keys are local, load local
-            // if(localStorage.ipfsKeyVal && localStorage.ipfsSecretVal){
-            // if(localStorage.ipfsKeyVal && localStorage.ipfsSecretVal){
-            //     ipfsKeyVal = localStorage.ipfsKeyVal;
-            //     ipfsSecretVal = localStorage.ipfsSecretVal;
-            // } else {
-            ipfsKeyVal = ipfsKey.value;
-            ipfsSecretVal = ipfsSecret.value;
-            // }
-            if(!ipfsKeyVal || !ipfsSecretVal ) {console.log('no ipfs'); return;}
-            const url = `https://api.pinata.cloud/data/testAuthentication`;
-            return axios
-                .get(url, {
-                    headers: {
-                        'pinata_api_key': ipfsKeyVal,
-                        'pinata_secret_api_key': ipfsSecretVal
-                    }
-                })
-                .then(function (response) {
-                    if(response.data.message === 'Congratulations! You are communicating with the Pinata API!'){
-                        console.log('Connected to IPFS')
-                    }
-                    ipfsConnected.style.display = "block";
-                    ipfsInput.style.display = "none";  
-                    //rerender all chats display
-                    renderAllChatMenu();
-                })
-                .catch(function (error) {
-                    console.log(error)
-                });
-            }; //ipfsInit();  
-            
-            
-            const IPFSPinaFile = (item)=>{
-               if(!item || !item.title){ console.log('no data'); return; }
-               //gateway = https://gateway.pinata.cloud/ipfs/QmX3Xj4g5HcqMhudiFz4zWSdx3JJiVuLEmvopRKiD1bsi8/
-               // const url =  'https://api.pinata.cloud/pinning/pinFileToIPFS';
-               // const url = `https://api.pinata.cloud/pinning/pinJSONToIPFS`;
-               // const data = textareaBOX.value
-               ipfsKeyVal = ipfsKey.value;
-               ipfsSecretVal = ipfsSecret.value;
-               if(!ipfsKeyVal || !ipfsSecretVal ) {return;}
-               // return axios.post('https://api.pinata.cloud/pinning/pinFileToIPFS',
-               return axios.post('https://api.pinata.cloud/pinning/pinJSONToIPFS',
-                  JSON.stringify(item),
-                  //data,
-                  { headers: {
-                        // 'Content-Type': `multipart/form-data; boundary= ${data._boundary}`,
-                        'pinata_api_key': ipfsKeyVal,
-                        'pinata_secret_api_key': ipfsSecretVal
-                     }
-                  }).then(function (response) { //on successful PIN
-                     let IpfsHash = response.data.IpfsHash;
-                     let IpfsTime = response.data.Timestamp;
-                     ipfsCorpus.push({title:item.title,hash:IpfsHash,time:IpfsTime})
-                     localStorage.ipfsCorpus = JSON.stringify(ipfsCorpus)
-                     renderAllChatMenu();
-                        //response.data.Timestamp = '2023-10-01T22:03:20.066Z'
-                        //response.data.IpfsHash = 'QmX3Xj4g5HcqMhudiFz4zWSdx3JJiVuLEmvopRKiD1bsi8'
-                     // response.data.IpfsHash
-                     // 'QmeWPa9vyrRfXkJhkU4BJN3bsF9KHqde4KMZzgjfVZwFKT'
-                     // response.data.Timestamp
-                     // '2023-10-07T22:28:11.643Z'
-                     // JSON.parse(response.config.data)
-                  }).catch(function (error) {
-                     debugger;
-                  });
-            };
-
+   //------------------------  IPFS
+   const ipfsInit = ()=>{
+      //if keys are local, load local
+      // if(localStorage.ipfsKeyVal && localStorage.ipfsSecretVal){
+      // if(localStorage.ipfsKeyVal && localStorage.ipfsSecretVal){
+      //     ipfsKeyVal = localStorage.ipfsKeyVal;
+      //     ipfsSecretVal = localStorage.ipfsSecretVal;
+      // } else {
+      ipfsKeyVal = ipfsKey.value;
+      ipfsSecretVal = ipfsSecret.value;
+      // }
+      if(!ipfsKeyVal || !ipfsSecretVal ) {console.log('no ipfs'); return;}
+      const url = `https://api.pinata.cloud/data/testAuthentication`;
+      return axios
+            .get(url, {
+               headers: {
+                  'pinata_api_key': ipfsKeyVal,
+                  'pinata_secret_api_key': ipfsSecretVal
+               }
+            })
+            .then(function (response) {
+               if(response.data.message === 'Congratulations! You are communicating with the Pinata API!'){
+                  console.log('Connected to IPFS')
+               }
+               ipfsConnected.style.display = "block";
+               ipfsInput.style.display = "none";  
+               //rerender all chats display
+               renderAllChatMenu();
+            })
+            .catch(function (error) {
+               console.log(error)
+            });
+      }; //ipfsInit();  
+      
+      
+      const IPFSPinaFile = (item)=>{
+         if(!item || !item.title){ console.log('no data'); return; }
+         //gateway = https://gateway.pinata.cloud/ipfs/QmX3Xj4g5HcqMhudiFz4zWSdx3JJiVuLEmvopRKiD1bsi8/
+         //gateway = https://gateway.pinata.cloud/ipfs/QmNkpMS3yHmopYSSZKoxUaCp9A8GmbRS63z8uvJo2DafK7/
+         // const url =  'https://api.pinata.cloud/pinning/pinFileToIPFS';
+         // const url = `https://api.pinata.cloud/pinning/pinJSONToIPFS`;
+         // const data = textareaBOX.value
+         ipfsKeyVal = ipfsKey.value;
+         ipfsSecretVal = ipfsSecret.value;
+         if(!ipfsKeyVal || !ipfsSecretVal ) {return;}
+         // return axios.post('https://api.pinata.cloud/pinning/pinFileToIPFS',
+         debugger;
+         return axios.post('https://api.pinata.cloud/pinning/pinJSONToIPFS',
+            item,
+            // JSON.stringify(item),
+            //data,
+            { headers: {
+                  // 'Content-Type': `multipart/form-data; boundary= ${data._boundary}`,
+                  'pinata_api_key': ipfsKeyVal,
+                  'pinata_secret_api_key': ipfsSecretVal
+               }
+            }).then(function (response) { //on successful PIN
+               let IpfsHash = response.data.IpfsHash;
+               let IpfsTime = response.data.Timestamp;
+               ipfsCorpus.push({title:item.title,hash:IpfsHash,time:IpfsTime})
+               localStorage.ipfsCorpus = JSON.stringify(ipfsCorpus)
+               renderAllChatMenu();
+                  //response.data.Timestamp = '2023-10-01T22:03:20.066Z'
+                  //response.data.IpfsHash = 'QmX3Xj4g5HcqMhudiFz4zWSdx3JJiVuLEmvopRKiD1bsi8'
+               // response.data.IpfsHash
+               // 'QmeWPa9vyrRfXkJhkU4BJN3bsF9KHqde4KMZzgjfVZwFKT'
+               // response.data.Timestamp
+               // '2023-10-07T22:28:11.643Z'
+               // JSON.parse(response.config.data)
+            }).catch(function (error) {
+               debugger;
+            });
+      };
+      const IPFSLoadPinaFile = (hash)=>{
+         if(!hash){return}
+         axios.get(`https://gateway.pinata.cloud/ipfs/${hash}/`)
+         .then(function (response) { //on successful PIN
+               console.log('loaded',response.data.title)
+               textareaBOX.value = response.data.txt;
+               textareaTXT = transcript.split('\n')
+               allchatBOX.classList.add('hiddenTab')
+               textareaBOX.classList.remove('hiddenTab') 
+               selectedTXT = '';               
+            }).catch(function (error) {
+               console.log('could not load ipfs file')
+            });         
+      }
       </script> 
    </body>
 </html>
